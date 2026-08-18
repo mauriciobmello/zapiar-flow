@@ -1,12 +1,12 @@
 import express, { Express } from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
-import { healthCheck } from './db/connection'
-import authRoutes from './routes/auth'
-import workspaceRoutes from './routes/workspace'
-import flowRoutes from './routes/flow'
-import flowDefinitionRoutes from './routes/flowDefinition'
-import runRoutes from './routes/run'
+import { healthCheck } from './db/connection.js'
+import authRoutes from './routes/auth.js'
+import workspaceRoutes from './routes/workspace.js'
+import flowRoutes from './routes/flow.js'
+import flowDefinitionRoutes from './routes/flowDefinition.js'
+import runRoutes from './routes/run.js'
 
 dotenv.config()
 

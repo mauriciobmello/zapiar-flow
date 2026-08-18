@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { query } from '../db/connection'
+import { query } from '../db/connection.js'
 
 export async function getFlowDefinition(req: Request, res: Response) {
   try {

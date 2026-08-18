@@ -1,6 +1,6 @@
 import { Router } from 'express'
-import { getFlows, createFlow, getFlow, updateFlow, deleteFlow } from '../controllers/flow'
-import { authMiddleware } from '../middleware/auth'
+import { getFlows, createFlow, getFlow, updateFlow, deleteFlow } from '../controllers/flow.js'
+import { authMiddleware } from '../middleware/auth.js'
 
 const router = Router()
 

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
-import { query } from '../db/connection'
-import { advance } from '../engine/executor'
-import type { ExecutionContext, FlowDefinition } from '../engine/types'
+import { query } from '../db/connection.js'
+import { advance } from '../engine/executor.js'
+import type { ExecutionContext, FlowDefinition } from '../engine/types.js'
 
 async function loadPublishedDefinition(flowId: string): Promise<FlowDefinition | null> {
   const flowResult = await query('SELECT status FROM flows WHERE id = $1', [flowId])

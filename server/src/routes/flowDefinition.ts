@@ -4,8 +4,8 @@ import {
   saveFlowDefinition,
   publishFlow,
   getFlowVersions,
-} from '../controllers/flowDefinition'
-import { authMiddleware } from '../middleware/auth'
+} from '../controllers/flowDefinition.js'
+import { authMiddleware } from '../middleware/auth.js'
 
 const router = Router()
 

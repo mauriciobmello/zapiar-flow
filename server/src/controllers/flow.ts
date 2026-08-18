@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { query } from '../db/connection'
+import { query } from '../db/connection.js'
 import { v4 as uuidv4 } from 'uuid'
 
 // Verificar acesso ao workspace

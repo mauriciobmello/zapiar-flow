@@ -1,6 +1,6 @@
-import { evaluateRule, interpolate, interpolateJson } from './rules'
-import { safeHttpRequest } from './safeHttpRequest'
-import type { ExecutionContext, FlowDefinition, FlowNode, RuntimeOption, StepResult } from './types'
+import { evaluateRule, interpolate, interpolateJson } from './rules.js'
+import { safeHttpRequest } from './safeHttpRequest.js'
+import type { ExecutionContext, FlowDefinition, FlowNode, RuntimeOption, StepResult } from './types.js'
 
 const MAX_STEPS = 100
 const MAX_DELAY_MS = 10_000

@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { startExecution, replyExecution, receiveWebhook, pollExecution } from '../controllers/run'
+import { startExecution, replyExecution, receiveWebhook, pollExecution } from '../controllers/run.js'
 
 const router = Router()
 

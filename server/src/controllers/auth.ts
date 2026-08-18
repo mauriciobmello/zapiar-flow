@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import bcrypt from 'bcryptjs'
-import { query } from '../db/connection'
-import { generateToken } from '../utils/jwt'
+import { query } from '../db/connection.js'
+import { generateToken } from '../utils/jwt.js'
 import { v4 as uuidv4 } from 'uuid'
 
 export async function signUp(req: Request, res: Response) {

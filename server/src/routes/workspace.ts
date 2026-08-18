@@ -1,6 +1,6 @@
 import { Router } from 'express'
-import { getWorkspaces, createWorkspace, getWorkspace } from '../controllers/workspace'
-import { authMiddleware } from '../middleware/auth'
+import { getWorkspaces, createWorkspace, getWorkspace } from '../controllers/workspace.js'
+import { authMiddleware } from '../middleware/auth.js'
 
 const router = Router()
 
