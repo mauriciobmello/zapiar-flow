@@ -1,0 +1,114 @@
+📁 ZAPIAR FLOW - PROJECT STRUCTURE
+
+zapiar-flow/
+│
+├── 📄 START_HERE.txt                  👈 COMEÇAR AQUI!
+├── 📄 QUICKSTART.md                   ⚡ 30 segundos para começar
+├── 📄 SETUP.md                        📋 Setup passo-a-passo
+├── 📄 README.md                       📚 Descrição do projeto
+├── 📄 DEVELOPMENT.md                  🔧 Guia de desenvolvimento
+├── 📄 CONTRIBUTING.md                 🤝 Como contribuir
+├── 📄 FAQ.md                          ❓ Perguntas frequentes
+├── 📄 PROJECT_STATUS.txt              📊 Status completo
+├── 📄 IMPLEMENTATION_SUMMARY.md        📝 Resumo da implementação
+├── 📄 .env.example                    🔐 Variáveis de ambiente
+├── 📄 .gitignore
+│
+├── 📁 src/                            💻 CÓDIGO FONTE
+│   ├── 📄 App.tsx                     App main router
+│   ├── 📄 main.tsx                    React entry point
+│   ├── 📄 index.css                   Tailwind + global styles
+│   │
+│   ├── 📁 types/
+│   │   └── 📄 index.ts                TypeScript definitions
+│   │
+│   ├── 📁 stores/                     🏪 ZUSTAND STORES
+│   │   ├── 📄 auth.ts                 Authentication store
+│   │   ├── 📄 workspace.ts            Workspace store
+│   │   └── 📄 editor.ts               Editor store
+│   │
+│   ├── 📁 components/                 🎨 COMPONENTS
+│   │   ├── 📄 ProtectedRoute.tsx      Route protection
+│   │   ├── 📁 canvas/
+│   │   │   └── 📄 Canvas.tsx          React Flow canvas
+│   │   ├── 📁 nodes/
+│   │   │   └── 📄 NodeComponents.tsx  9 node types
+│   │   └── 📁 panels/
+│   │       ├── 📄 ComponentLibrary.tsx Left sidebar
+│   │       └── 📄 PropertiesPanel.tsx  Right sidebar
+│   │
+│   ├── 📁 features/                   🚀 FEATURES
+│   │   ├── 📁 auth/
+│   │   │   └── 📄 Login.tsx           Login/signup page
+│   │   ├── 📁 dashboard/
+│   │   │   └── 📄 Dashboard.tsx       Main dashboard
+│   │   └── 📁 flows/
+│   │       └── 📁 editor/
+│   │           └── 📄 FlowEditor.tsx  Flow editor
+│   │
+│   └── 📁 lib/
+│       └── 📄 supabase.ts             Supabase client
+│
+├── 📁 supabase/                       🗄️  DATABASE
+│   └── 📁 migrations/
+│       └── 📄 001_initial_schema.sql  SQL schema
+│
+├── 📁 dist/                           📦 BUILD OUTPUT
+│   ├── 📄 index.html
+│   └── 📁 assets/
+│       ├── *.css
+│       └── *.js
+│
+├── 📁 node_modules/                   📚 DEPENDENCIES (320 packages)
+│
+├── 📄 package.json                    📋 Dependencies & scripts
+├── 📄 package-lock.json
+├── 📄 tsconfig.json                   TypeScript config
+├── 📄 tsconfig.node.json              TS config for Vite
+├── 📄 vite.config.ts                  Vite build config
+├── 📄 tailwind.config.js              Tailwind CSS config
+├── 📄 postcss.config.js               PostCSS config
+└── 📄 index.html                      HTML template
+
+═══════════════════════════════════════════════════════════════════════════════
+
+KEY FILES TO KNOW:
+
+🎯 Entry Point
+   └─ src/main.tsx → src/App.tsx
+
+🔐 Authentication
+   └─ src/stores/auth.ts → src/features/auth/Login.tsx
+
+🖼️  Editor Canvas
+   └─ src/features/flows/editor/FlowEditor.tsx
+      ├─ src/components/canvas/Canvas.tsx
+      ├─ src/components/nodes/NodeComponents.tsx
+      ├─ src/components/panels/ComponentLibrary.tsx
+      └─ src/components/panels/PropertiesPanel.tsx
+
+📊 State Management
+   ├─ src/stores/auth.ts
+   ├─ src/stores/workspace.ts
+   └─ src/stores/editor.ts
+
+💾 Database
+   └─ supabase/migrations/001_initial_schema.sql
+
+═══════════════════════════════════════════════════════════════════════════════
+
+BUILD COMMANDS:
+
+npm run dev                Build and run dev server (http://localhost:3000)
+npm run build              Build for production
+npm run type-check         Check TypeScript errors
+npm run preview            Preview production build
+npm install                Install dependencies
+
+═══════════════════════════════════════════════════════════════════════════════
+
+PROJECT STATUS:
+✅ Sprints 1-2 Complete (Foundation + Editor)
+⚠️  Sprints 3-10 Pending (Persistence, Engine, etc)
+
+═══════════════════════════════════════════════════════════════════════════════
