@@ -207,11 +207,9 @@ git push origin main
 - [x] Testar CRUD de fluxos (workspaces, flows, definition save/load, publish/versioning, delete, controle de acesso entre usuários)
 
 ### Fase 2: Produção
-- [x] Dockerfile do backend corrigido (não instalava mais as deps do frontend à toa)
-- [x] Dockerfile.frontend + nginx.conf (build do Vite servido via nginx, proxy same-origin para `/api`)
-- [x] docker-compose.prod.yml (postgres + backend + frontend, pronto para Dokploy)
-- [x] Ver [DEPLOY.md](DEPLOY.md) para os passos exatos no Dokploy — setup, domínio/SSL, backups, monitoramento
-- [ ] Executar o deploy real no Dokploy (requer acesso ao painel/servidor do usuário)
+- [x] Dockerfile único (frontend + backend no mesmo container — Express serve a API em `/api` e o build do Vite em tudo o mais, com fallback de SPA). Depois de tentar 3 containers via docker-compose + Dokploy e esbarrar em atrito de rede/portas, consolidamos num container só.
+- [x] Ver [DEPLOY.md](DEPLOY.md) para os passos exatos no Dokploy — banco nativo, variáveis, domínio/porta, SSL, backups, monitoramento
+- [ ] Confirmar o deploy real funcionando no Dokploy (em andamento com o usuário)
 
 ### Fase 3: Features
 - [ ] Rate limiting

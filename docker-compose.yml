@@ -25,7 +25,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: builder
+      target: backend-builder
     container_name: zapiar-flow-backend
     environment:
       NODE_ENV: development
@@ -48,19 +48,6 @@ services:
       - ./server/src:/app/server/src
       - ./server/dist:/app/server/dist
     command: npm run dev
-
-  # Optional: Frontend development server (if needed)
-  # frontend:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile.frontend
-  #   container_name: zapiar-flow-frontend
-  #   ports:
-  #     - "3000:3000"
-  #   depends_on:
-  #     - backend
-  #   environment:
-  #     VITE_API_URL: http://localhost:3001/api
 
 volumes:
   postgres_data:

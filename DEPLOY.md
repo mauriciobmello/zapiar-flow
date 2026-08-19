@@ -1,61 +1,76 @@
 # Deploy no Dokploy
 
-Este projeto tem três containers: `postgres`, `backend` (Express/API) e `frontend`
-(build estático do Vite servido por nginx, que faz proxy de `/api` para o `backend`
-dentro da rede interna). O arquivo usado em produção é `docker-compose.prod.yml`
-(o `docker-compose.yml` na raiz é só para desenvolvimento local, com hot-reload).
+Um único container: o Express serve a API em `/api/*` e os arquivos estáticos
+do build do Vite em tudo o mais (com fallback de SPA para as rotas do React
+Router). Sem nginx, sem docker-compose em produção — só o `Dockerfile` da raiz
+e um banco Postgres.
 
-## 1. Setup do container + database
+(O `docker-compose.yml` na raiz continua existindo só para desenvolvimento
+local — sobe Postgres + backend com hot-reload. Não é usado em produção.)
 
-1. No Dokploy, crie um novo **Project** e dentro dele uma **Application** do tipo
-   **Docker Compose**, apontando para este repositório Git.
-2. Configure o **Compose Path** para `docker-compose.prod.yml`.
-3. Em **Environment Variables**, defina (Dokploy injeta essas vars no compose):
+## 1. Banco de dados
 
-   | Variável | Descrição |
+1. No Dokploy, dentro do seu **Project**, crie um **Database** do tipo
+   **Postgres** (recurso nativo do Dokploy, não faz parte da aplicação).
+2. Anote host interno, porta, usuário, senha e nome do banco que o Dokploy
+   gerar — vai precisar deles no passo 3.
+3. Aplique o schema uma vez (o Dokploy não faz isso sozinho para bancos
+   criados assim, diferente de um Postgres definido dentro de um
+   docker-compose). Duas formas:
+   - Pelo **SQL Console** do próprio recurso de banco no Dokploy, se tiver
+     um: cole o conteúdo de `server/config/schema.sql`.
+   - Ou via `psql`, de qualquer máquina com acesso à porta do banco:
+     ```bash
+     psql "postgresql://<usuario>:<senha>@<host>:<porta>/<database>" \
+       -f server/config/schema.sql
+     ```
+
+## 2. Aplicação
+
+1. Crie uma **Application** do tipo **Dockerfile** (não Docker Compose),
+   apontando para este repositório Git. O Dockerfile da raiz builda frontend
+   e backend juntos.
+2. Em **Environment Variables**:
+
+   | Variável | Valor |
    |---|---|
-   | `DB_USER` | usuário do Postgres (padrão `postgres`) |
-   | `DB_PASSWORD` | senha forte, gerada uma vez — **não reaproveite** a de dev |
-   | `DB_NAME` | nome do banco (padrão `zapiar_flow`) |
-   | `JWT_SECRET` | string aleatória longa (ex.: `openssl rand -hex 32`) |
-   | `JWT_EXPIRE` | ex.: `7d` |
-   | `FRONTEND_URL` | domínio público do frontend, ex.: `https://app.seudominio.com` |
+   | `NODE_ENV` | `production` |
+   | `PORT` | `3001` |
+   | `DB_HOST` | host do banco criado no passo 1 |
+   | `DB_PORT` | porta do banco (normalmente `5432`) |
+   | `DB_USER` | usuário do banco |
+   | `DB_PASSWORD` | senha do banco |
+   | `DB_NAME` | nome do banco |
+   | `JWT_SECRET` | string aleatória longa (`openssl rand -hex 32`) |
+   | `JWT_EXPIRE` | `7d` |
+   | `FRONTEND_URL` | o próprio domínio público desta app, ex.: `https://app.seudominio.com` |
 
-4. Em **Domains**, aponte o domínio público apenas para o serviço `frontend`,
-   porta `80`. `backend` e `postgres` **não** devem ter domínio público — eles só
-   são alcançados dentro da rede interna do compose (`backend:3001`, `postgres:5432`).
-5. Deploy. O Postgres aplica `server/config/schema.sql` automaticamente na primeira
-   subida (via `docker-entrypoint-initdb.d`), então não é necessário rodar migração
-   manual.
+3. Em **Domains**, aponte o domínio público para esta aplicação, **Container
+   Port `3001`** (é a porta que o `EXPOSE`/`PORT` do Dockerfile usa — não
+   `3000`, que é só o valor padrão sugerido pelo Dokploy).
+4. Deploy.
 
-## 2. SSL
+## 3. SSL
 
 O Dokploy provisiona certificado Let's Encrypt automaticamente para qualquer
-domínio configurado na aba **Domains** da aplicação, desde que o DNS já aponte
-para o servidor. Nada a fazer no código — só confirmar que o domínio está com
-"HTTPS" habilitado nas configurações do domínio dentro do Dokploy.
+domínio configurado em **Domains**, desde que o DNS já aponte para o
+servidor. Só confirmar que "HTTPS" está habilitado nas configurações do
+domínio.
 
-## 3. Backups
+## 4. Backups
 
 Configure em **Databases → (seu Postgres) → Backups** no Dokploy:
-- Agende backups periódicos (diário é um bom padrão) do volume `postgres_data`.
-- Aponte o destino para um storage S3-compatible (Dokploy suporta isso nativamente).
-- Faça um teste de restore pelo menos uma vez antes de confiar no agendamento.
+- Agende backups periódicos (diário é um bom padrão).
+- Aponte o destino para um storage S3-compatible (Dokploy suporta
+  nativamente).
+- Teste um restore pelo menos uma vez antes de confiar no agendamento.
 
-## 4. Monitoramento
+## 5. Monitoramento
 
-- O Dokploy expõe métricas básicas de CPU/memória/rede por serviço na aba
-  **Monitoring** de cada aplicação — sem configuração adicional.
-- Os healthchecks já definidos nos Dockerfiles (`/health` no backend, `/` no
-  frontend) alimentam o status "healthy/unhealthy" que o Dokploy mostra e usa
-  para decidir se reinicia o container.
-- Para alertas (ex.: Slack/email quando um serviço cai), configure em
-  **Notifications** no Dokploy apontando para os webhooks desejados.
-
-## Variáveis de ambiente do frontend
-
-O frontend é buildado com `VITE_API_URL=/api` (baked em build-time), porque o
-nginx do próprio container faz proxy de `/api` para `backend:3001/api`. Isso
-evita CORS em produção — o browser enxerga tudo como same-origin. Não é
-necessário (nem recomendado) apontar o frontend direto para o domínio do
-backend.
+- O Dokploy expõe métricas básicas de CPU/memória/rede na aba **Monitoring**
+  da aplicação, sem configuração adicional.
+- O healthcheck do `Dockerfile` (`GET /health`) alimenta o status
+  "healthy/unhealthy" que o Dokploy usa para decidir se reinicia o
+  container.
+- Para alertas (Slack/email quando o serviço cai), configure em
+  **Notifications** no Dokploy.

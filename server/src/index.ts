@@ -1,6 +1,8 @@
 import express, { Express } from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
+import path from 'path'
+import { fileURLToPath } from 'url'
 import { healthCheck } from './db/connection.js'
 import authRoutes from './routes/auth.js'
 import workspaceRoutes from './routes/workspace.js'
@@ -9,6 +11,9 @@ import flowDefinitionRoutes from './routes/flowDefinition.js'
 import runRoutes from './routes/run.js'
 
 dotenv.config()
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const PUBLIC_DIR = path.join(__dirname, '../public')
 
 const app: Express = express()
 const PORT = process.env.PORT || 3001
@@ -40,9 +45,15 @@ app.get('/health', async (req, res) => {
   })
 })
 
-// 404 handler
-app.use((req, res) => {
+// Unmatched API routes get a JSON 404, not the SPA fallback below
+app.use('/api', (req, res) => {
   res.status(404).json({ error: 'Not found' })
+})
+
+// Serve the built frontend (single-container deploy — see Dockerfile)
+app.use(express.static(PUBLIC_DIR))
+app.get('*', (req, res) => {
+  res.sendFile(path.join(PUBLIC_DIR, 'index.html'))
 })
 
 // Error handler

@@ -1,5 +1,22 @@
-# Build stage
-FROM node:20-alpine AS builder
+# Build stage: frontend (Vite SPA)
+FROM node:20-alpine AS frontend-builder
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm ci
+
+COPY tsconfig*.json vite.config.ts index.html tailwind.config.js postcss.config.js ./
+COPY src ./src
+
+# Same-origin: the backend serves this build directly, so /api needs no host.
+ARG VITE_API_URL=/api
+ENV VITE_API_URL=$VITE_API_URL
+
+RUN npm run build
+
+# Build stage: backend (Express API)
+FROM node:20-alpine AS backend-builder
 
 WORKDIR /app/server
 
@@ -11,20 +28,19 @@ COPY server/src ./src
 
 RUN npm run build
 
-# Runtime stage
+# Runtime stage — a single container serving both the API and the built SPA
 FROM node:20-alpine
 
 WORKDIR /app/server
 
-# Install dumb-init to handle signals properly
 RUN apk add --no-cache dumb-init
 
 COPY server/package*.json ./
 RUN npm ci --omit=dev
 
-COPY --from=builder /app/server/dist ./dist
+COPY --from=backend-builder /app/server/dist ./dist
+COPY --from=frontend-builder /app/dist ./public
 
-# Create non-root user
 RUN addgroup -g 1001 -S nodejs && \
     adduser -S nodejs -u 1001
 
