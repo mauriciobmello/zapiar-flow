@@ -3,13 +3,21 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-const pool = new Pool({
-  user: process.env.DB_USER || 'postgres',
-  password: process.env.DB_PASSWORD || 'postgres',
-  host: process.env.DB_HOST || 'localhost',
-  port: parseInt(process.env.DB_PORT || '5432'),
-  database: process.env.DB_NAME || 'zapiar_flow',
-})
+// DATABASE_URL (a single connection string, e.g. from Neon) takes precedence
+// over the individual DB_* vars used by the Dokploy deployment, so the same
+// code runs unmodified on either.
+const pool = process.env.DATABASE_URL
+  ? new Pool({
+      connectionString: process.env.DATABASE_URL,
+      ssl: process.env.DATABASE_URL.includes('sslmode=') ? undefined : { rejectUnauthorized: false },
+    })
+  : new Pool({
+      user: process.env.DB_USER || 'postgres',
+      password: process.env.DB_PASSWORD || 'postgres',
+      host: process.env.DB_HOST || 'localhost',
+      port: parseInt(process.env.DB_PORT || '5432'),
+      database: process.env.DB_NAME || 'zapiar_flow',
+    })
 
 pool.on('error', (err) => {
   console.error('Unexpected error on idle client', err)
