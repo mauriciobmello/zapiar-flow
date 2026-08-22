@@ -1,136 +1,46 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { api, ApiError, API_URL } from '@/lib/api'
-
-interface RuntimeOption {
-  label: string
-  value: string
-}
-
-interface RuntimeMessage {
-  type: 'text' | 'question' | 'button' | 'webhook' | 'end' | 'system'
-  text: string
-  options?: RuntimeOption[]
-}
-
-type WaitingFor = 'question' | 'button' | 'webhook' | null
-
-interface StepResponse {
-  executionId: string
-  messages: RuntimeMessage[]
-  waitingFor: WaitingFor
-  options?: RuntimeOption[]
-  finished: boolean
-}
-
-interface PollResponse {
-  changed: boolean
-  executionId?: string
-  messages?: RuntimeMessage[]
-  waitingFor?: WaitingFor
-  options?: RuntimeOption[]
-  finished?: boolean
-}
-
-const WEBHOOK_POLL_MS = 2000
-
-interface ChatEntry {
-  from: 'bot' | 'user'
-  text: string
-  system?: boolean
-}
+import { API_URL } from '@/lib/api'
+import { useFlowRuntime } from '@/widget/useFlowRuntime'
 
 export default function RunFlow() {
   const { flowId } = useParams<{ flowId: string }>()
-  const [log, setLog] = useState<ChatEntry[]>([])
-  const [executionId, setExecutionId] = useState<string | null>(null)
-  const [waitingFor, setWaitingFor] = useState<WaitingFor>(null)
-  const [options, setOptions] = useState<RuntimeOption[]>([])
-  const [finished, setFinished] = useState(false)
   const [input, setInput] = useState('')
   const [sending, setSending] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(true)
   const bottomRef = useRef<HTMLDivElement>(null)
 
-  const applyResponse = useCallback((res: StepResponse) => {
-    setLog((prev) => [
-      ...prev,
-      ...res.messages.map((m) => ({ from: 'bot' as const, text: m.text, system: m.type === 'system' })),
-    ])
-    setExecutionId(res.executionId)
-    setWaitingFor(res.waitingFor)
-    setOptions(res.options || [])
-    setFinished(res.finished)
-  }, [])
-
-  const startedRef = useRef(false)
-
-  useEffect(() => {
-    // Guards against React StrictMode's dev-only double-invoke of effects,
-    // which would otherwise start two executions and duplicate every message.
-    if (!flowId || startedRef.current) return
-    startedRef.current = true
-
-    api
-      .post<StepResponse>(`/run/${flowId}/start`)
-      .then(applyResponse)
-      .catch((err) => {
-        if (err instanceof ApiError && err.status === 404) {
-          setError('Este fluxo não existe ou ainda não foi publicado.')
-        } else {
-          setError(err instanceof Error ? err.message : 'Erro ao iniciar o fluxo')
-        }
-      })
-      .finally(() => setLoading(false))
-  }, [flowId, applyResponse])
+  const {
+    log,
+    executionId,
+    waitingFor,
+    options,
+    finished,
+    sendReply,
+    webhookUrl,
+    error,
+    loading,
+  } = useFlowRuntime({
+    flowId: flowId || '',
+    apiUrl: API_URL,
+  })
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [log])
 
-  const sendReply = useCallback(
+  const handleSend = useCallback(
     async (value: string) => {
-      if (!flowId || !executionId || !value.trim()) return
-
-      setLog((prev) => [...prev, { from: 'user', text: value }])
-      setWaitingFor(null)
-      setOptions([])
-      setInput('')
+      if (!value.trim()) return
       setSending(true)
-
+      setInput('')
       try {
-        const res = await api.post<StepResponse>(`/run/${flowId}/${executionId}/reply`, { input: value })
-        applyResponse(res)
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Erro ao enviar resposta')
+        await sendReply(value)
       } finally {
         setSending(false)
       }
     },
-    [flowId, executionId, applyResponse]
+    [sendReply]
   )
-
-  // Nothing in the browser can know when an external system calls the
-  // webhook — it happens entirely server-side. Poll for it while waiting.
-  useEffect(() => {
-    if (waitingFor !== 'webhook' || !flowId || !executionId) return
-
-    const interval = setInterval(async () => {
-      try {
-        const res = await api.get<PollResponse>(`/run/${flowId}/${executionId}/poll`)
-        if (res.changed && res.executionId) {
-          applyResponse(res as StepResponse)
-        }
-      } catch {
-        // Transient poll failures aren't worth surfacing — just try again next tick.
-      }
-    }, WEBHOOK_POLL_MS)
-
-    return () => clearInterval(interval)
-  }, [waitingFor, flowId, executionId, applyResponse])
-
-  const webhookUrl = executionId ? `${API_URL}/webhook/${executionId}` : ''
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4 py-8">
@@ -167,7 +77,7 @@ export default function RunFlow() {
               {options.map((opt) => (
                 <button
                   key={opt.value}
-                  onClick={() => sendReply(opt.value)}
+                  onClick={() => handleSend(opt.value)}
                   disabled={sending}
                   className="px-3 py-1.5 text-sm bg-white border border-blue-600 text-blue-600 rounded-full hover:bg-blue-50 transition disabled:opacity-50"
                 >
@@ -209,7 +119,7 @@ export default function RunFlow() {
           <form
             onSubmit={(e) => {
               e.preventDefault()
-              sendReply(input)
+              handleSend(input)
             }}
             className="border-t border-gray-200 p-3 flex gap-2"
           >

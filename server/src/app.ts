@@ -1,5 +1,4 @@
 import express, { Express } from 'express'
-import cors from 'cors'
 import dotenv from 'dotenv'
 import { healthCheck } from './db/connection.js'
 import authRoutes from './routes/auth.js'
@@ -19,11 +18,32 @@ const app: Express = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-const corsOptions = {
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-  credentials: true,
-}
-app.use(cors(corsOptions))
+const editorCorsOrigin =
+  process.env.FRONTEND_URL ||
+  (process.env.VERCEL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000')
+
+app.use((req, res, next) => {
+  const isPublicRuntime = req.path.startsWith('/api/run/') || req.path.startsWith('/webhook/')
+
+  if (isPublicRuntime) {
+    res.header('Access-Control-Allow-Origin', '*')
+    res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS')
+    res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    if (req.method === 'OPTIONS') {
+      return res.sendStatus(204)
+    }
+  } else {
+    res.header('Access-Control-Allow-Origin', editorCorsOrigin)
+    res.header('Access-Control-Allow-Credentials', 'true')
+    res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS')
+    res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    if (req.method === 'OPTIONS') {
+      return res.sendStatus(204)
+    }
+  }
+
+  next()
+})
 
 app.use('/api', authRoutes)
 app.use('/api', workspaceRoutes)

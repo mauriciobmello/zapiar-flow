@@ -39,6 +39,9 @@ export default function Dashboard() {
   const [showNewWorkspaceModal, setShowNewWorkspaceModal] = useState(false)
   const [workspaceName, setWorkspaceName] = useState('')
   const [deletingId, setDeletingId] = useState<string | null>(null)
+  const [showWidgetModal, setShowWidgetModal] = useState(false)
+  const [selectedFlow, setSelectedFlow] = useState<Flow | null>(null)
+  const [copied, setCopied] = useState(false)
 
   useEffect(() => {
     if (user) {
@@ -100,6 +103,41 @@ export default function Dashboard() {
       console.error('Failed to delete flow:', error)
     } finally {
       setDeletingId(null)
+    }
+  }
+
+  const handleOpenWidget = (flow: Flow) => {
+    setSelectedFlow(flow)
+    setShowWidgetModal(true)
+    setCopied(false)
+  }
+
+  const handleCopyWidgetCode = async () => {
+    if (!selectedFlow) return
+
+    const origin = window.location.origin
+    const code = `<!-- Zapiar Flow Widget -->
+<script src="${origin}/widget.js"><\/script>
+<script>
+  ZapiarFlowWidget.mount({
+    flowId: '${selectedFlow.id}',
+    container: document.body,
+    theme: {
+      primaryColor: '#2563eb',
+      backgroundColor: '#ffffff',
+      textColor: '#111827',
+      borderRadius: '12px',
+      fontFamily: 'system-ui, sans-serif'
+    }
+  })
+<\/script>`
+
+    try {
+      await navigator.clipboard.writeText(code)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch {
+      console.error('Failed to copy')
     }
   }
 
@@ -245,6 +283,15 @@ export default function Dashboard() {
                     </span>
                     <span className="text-xs text-gray-500">v{flow.version}</span>
                   </div>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleOpenWidget(flow)
+                    }}
+                    className="mt-3 w-full px-3 py-1.5 text-xs font-medium bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition"
+                  >
+                    Obter Widget
+                  </button>
                 </div>
               ))}
             </div>
@@ -282,6 +329,51 @@ export default function Dashboard() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Widget Embed Modal */}
+      {showWidgetModal && selectedFlow && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white rounded-lg p-6 w-full max-w-2xl">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold text-gray-900">Embed Widget</h2>
+              <button
+                onClick={() => setShowWidgetModal(false)}
+                className="text-gray-400 hover:text-gray-600 text-2xl leading-none"
+              >
+                ×
+              </button>
+            </div>
+            <p className="text-sm text-gray-600 mb-4">
+              Adicione este código ao site onde deseja exibir o fluxo <strong>{selectedFlow.name}</strong>.
+            </p>
+            <pre className="bg-gray-900 text-gray-100 text-xs p-4 rounded-lg overflow-x-auto whitespace-pre-wrap break-words">
+{`<!-- Zapiar Flow Widget -->
+<script src="${window.location.origin}/widget.js"><\/script>
+<script>
+  ZapiarFlowWidget.mount({
+    flowId: '${selectedFlow.id}',
+    container: document.body,
+    theme: {
+      primaryColor: '#2563eb',
+      backgroundColor: '#ffffff',
+      textColor: '#111827',
+      borderRadius: '12px',
+      fontFamily: 'system-ui, sans-serif'
+    }
+  })
+<\/script>`}
+            </pre>
+            <div className="flex justify-end mt-4">
+              <button
+                onClick={handleCopyWidgetCode}
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition"
+              >
+                {copied ? 'Copiado!' : 'Copiar código'}
+              </button>
+            </div>
           </div>
         </div>
       )}
