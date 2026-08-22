@@ -5,6 +5,7 @@ import Login from '@/features/auth/Login'
 import Dashboard from '@/features/dashboard/Dashboard'
 import FlowEditor from '@/features/flows/editor/FlowEditor'
 import RunFlow from '@/features/run/RunFlow'
+import Onboarding from '@/features/secretary/Onboarding'
 import ProtectedRoute from '@/components/ProtectedRoute'
 
 export default function App() {
@@ -30,6 +31,7 @@ export default function App() {
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/flows/:flowId/editor" element={<FlowEditor />} />
+          <Route path="/secretary/new" element={<Onboarding />} />
         </Route>
         <Route path="/" element={<Navigate to={user ? '/dashboard' : '/login'} replace />} />
       </Routes>

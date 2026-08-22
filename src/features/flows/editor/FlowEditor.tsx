@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect, useState, useCallback, DragEvent } from 'react'
-import { api } from '@/lib/api'
+import { api, API_URL } from '@/lib/api'
 import Canvas from '@/components/canvas/Canvas'
 import ComponentLibrary from '@/components/panels/ComponentLibrary'
 import PropertiesPanel from '@/components/panels/PropertiesPanel'
@@ -8,6 +8,13 @@ import { useFlowPersistence } from '@/hooks/useFlowPersistence'
 import { useAuthStore } from '@/stores/auth'
 import type { Flow, FlowNode, FlowEdge, FlowDefinition } from '@/types'
 import { nanoid } from 'nanoid'
+
+interface WebhookTestExecution {
+  executionId: string
+  flowId: string
+  webhookUrl: string
+  webhookNodes: { id: string; label: string }[]
+}
 
 export default function FlowEditor() {
   const { flowId } = useParams<{ flowId: string }>()
@@ -28,6 +35,8 @@ export default function FlowEditor() {
   const [editingName, setEditingName] = useState(false)
   const [nameInput, setNameInput] = useState('')
   const [renaming, setRenaming] = useState(false)
+  const [webhookTest, setWebhookTest] = useState<WebhookTestExecution | null>(null)
+  const [webhookTestLoading, setWebhookTestLoading] = useState(false)
 
   const {
     definition,
@@ -49,6 +58,9 @@ export default function FlowEditor() {
   } = useFlowPersistence({
     flowId,
   })
+
+  const webhookNodes = definition?.nodes.filter((n) => n.type === 'webhook') || []
+  const hasWebhooks = webhookNodes.length > 0
 
   // Load flow metadata
   useEffect(() => {
@@ -157,6 +169,39 @@ export default function FlowEditor() {
     } finally {
       setPublishLoading(false)
     }
+  }
+
+  const handleStartWebhookTest = async () => {
+    if (!flowId || !definition) return
+
+    const webhookNodeIds = definition.nodes.filter((n) => n.type === 'webhook')
+    if (webhookNodeIds.length === 0) return
+
+    setWebhookTestLoading(true)
+    try {
+      const res = await api.post<{
+        executionId: string
+        waitingFor: string
+        finished: boolean
+      }>(`/run/${flowId}/start`)
+
+      if (res.waitingFor === 'webhook' || res.finished === false) {
+        setWebhookTest({
+          executionId: res.executionId,
+          flowId,
+          webhookUrl: `${API_URL}/webhook/${res.executionId}`,
+          webhookNodes: webhookNodeIds.map((n) => ({ id: n.id, label: n.data.label })),
+        })
+      }
+    } catch (error) {
+      console.error('Failed to start webhook test:', error)
+    } finally {
+      setWebhookTestLoading(false)
+    }
+  }
+
+  const handleCloseWebhookTest = () => {
+    setWebhookTest(null)
   }
 
   const handleAddStartNode = useCallback(() => {
@@ -427,6 +472,16 @@ export default function FlowEditor() {
         </div>
 
         <div className="flex gap-2">
+          {hasWebhooks && (
+            <button
+              onClick={handleStartWebhookTest}
+              disabled={webhookTestLoading || flow?.status !== 'published'}
+              title={flow?.status !== 'published' ? 'Publique o fluxo para testar webhooks' : 'Testar webhooks'}
+              className="px-3 py-1 text-teal-700 hover:bg-teal-50 border border-teal-300 rounded transition text-xs disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {webhookTestLoading ? '⏳ Testando...' : '🪝 Testar Webhook'}
+            </button>
+          )}
           <button
             onClick={handleAddStartNode}
             className="px-3 py-1 text-gray-600 hover:bg-gray-100 rounded transition text-xs"
@@ -441,6 +496,57 @@ export default function FlowEditor() {
           </button>
         </div>
       </footer>
+
+      {/* Webhook Test Panel */}
+      {webhookTest && (
+        <div className="fixed bottom-16 right-4 w-96 bg-white border border-teal-200 rounded-lg shadow-xl z-50">
+          <div className="px-4 py-3 border-b border-teal-100 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="inline-block w-2 h-2 rounded-full bg-teal-500 animate-pulse" />
+              <span className="font-medium text-teal-900 text-sm">Teste de Webhook</span>
+            </div>
+            <button
+              onClick={handleCloseWebhookTest}
+              className="text-gray-400 hover:text-gray-600 text-lg leading-none"
+            >
+              ×
+            </button>
+          </div>
+          <div className="px-4 py-3 space-y-3">
+            <div>
+              <p className="text-xs text-gray-600 mb-1">URL do webhook (POST JSON):</p>
+              <div className="flex gap-2">
+                <code className="flex-1 text-xs bg-gray-50 border border-gray-200 rounded px-2 py-1.5 break-all text-teal-800">
+                  {webhookTest.webhookUrl}
+                </code>
+                <button
+                  onClick={() => navigator.clipboard.writeText(webhookTest.webhookUrl)}
+                  className="text-xs px-2 py-1 text-teal-700 border border-teal-300 rounded hover:bg-teal-50 transition shrink-0"
+                >
+                  Copiar
+                </button>
+              </div>
+            </div>
+            <div>
+              <p className="text-xs text-gray-600 mb-1">Nodes webhook no fluxo:</p>
+              <ul className="text-xs text-gray-700 space-y-1">
+                {webhookTest.webhookNodes.map((n) => (
+                  <li key={n.id} className="flex items-center gap-1">
+                    <span className="text-teal-500">🪝</span>
+                    {n.label}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="bg-teal-50 border border-teal-100 rounded px-3 py-2">
+              <p className="text-xs text-teal-700">
+                <strong>Como testar:</strong> Faça um POST JSON na URL acima para continuar a execução do fluxo.
+                Exemplo: <code className="bg-white px-1 rounded">curl -X POST {webhookTest.webhookUrl} -d '{`{"chave":"valor"}`}'</code>
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

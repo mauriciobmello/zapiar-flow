@@ -7,6 +7,7 @@ import workspaceRoutes from './routes/workspace.js'
 import flowRoutes from './routes/flow.js'
 import flowDefinitionRoutes from './routes/flowDefinition.js'
 import runRoutes from './routes/run.js'
+import secretaryRoutes from './routes/secretary.js'
 
 dotenv.config()
 
@@ -29,6 +30,7 @@ app.use('/api', workspaceRoutes)
 app.use('/api', flowRoutes)
 app.use('/api', flowDefinitionRoutes)
 app.use('/api', runRoutes)
+app.use('/api', secretaryRoutes)
 
 app.get('/health', async (req, res) => {
   const dbHealthy = await healthCheck()

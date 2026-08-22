@@ -130,3 +130,34 @@ export interface Credential {
   encryptedData: string
   createdAt: string
 }
+
+// Secretary IA
+export interface BusinessProfile {
+  id: string
+  workspaceId: string
+  businessName: string
+  segment: string
+  subsegment?: string
+  businessModel?: string
+  customers: string[]
+  products?: string[]
+  services?: string[]
+  channels: string[]
+  departments?: string[]
+  businessHours?: unknown
+  operationalProcesses?: string[]
+  communicationStyle?: string
+  restrictions?: string[]
+}
+
+export interface SecretaryAgent {
+  id: string
+  workspaceId: string
+  businessProfileId: string
+  flowId: string | null
+  name: string
+  description?: string
+  autonomyLevel: 'assistida' | 'semi_autonoma' | 'autonoma'
+  status: 'draft' | 'active' | 'paused'
+  systemInstructions?: string
+}

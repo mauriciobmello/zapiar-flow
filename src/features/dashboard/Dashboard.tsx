@@ -174,12 +174,20 @@ export default function Dashboard() {
         <div>
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-bold text-gray-900">Meus Fluxos</h2>
-            <button
-              onClick={handleCreateFlow}
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition"
-            >
-              + Novo Fluxo
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={() => navigate('/secretary/new')}
+                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition"
+              >
+                Secretaria IA
+              </button>
+              <button
+                onClick={handleCreateFlow}
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition"
+              >
+                + Novo Fluxo
+              </button>
+            </div>
           </div>
 
           {loading ? (

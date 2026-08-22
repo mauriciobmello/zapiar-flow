@@ -95,6 +95,42 @@ CREATE TABLE IF NOT EXISTS credentials (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Business profiles (extracted from conversational onboarding)
+CREATE TABLE IF NOT EXISTS business_profiles (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  workspace_id UUID NOT NULL REFERENCES workspaces(id) ON DELETE CASCADE,
+  business_name TEXT NOT NULL,
+  segment TEXT NOT NULL,
+  subsegment TEXT,
+  business_model TEXT,
+  customers TEXT[],
+  products TEXT[],
+  services TEXT[],
+  channels TEXT[],
+  departments TEXT[],
+  business_hours JSONB,
+  operational_processes TEXT[],
+  communication_style TEXT,
+  restrictions TEXT[],
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Secretary agents (created from a business profile + generated flow)
+CREATE TABLE IF NOT EXISTS secretary_agents (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  workspace_id UUID NOT NULL REFERENCES workspaces(id) ON DELETE CASCADE,
+  business_profile_id UUID NOT NULL REFERENCES business_profiles(id) ON DELETE CASCADE,
+  flow_id UUID REFERENCES flows(id) ON DELETE SET NULL,
+  name TEXT NOT NULL,
+  description TEXT,
+  autonomy_level TEXT NOT NULL CHECK (autonomy_level IN ('assistida', 'semi_autonoma', 'autonoma')) DEFAULT 'assistida',
+  status TEXT NOT NULL CHECK (status IN ('draft', 'active', 'paused')) DEFAULT 'draft',
+  system_instructions TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Create indices for performance
 CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 CREATE INDEX IF NOT EXISTS idx_workspaces_owner_id ON workspaces(owner_id);
@@ -106,3 +142,6 @@ CREATE INDEX IF NOT EXISTS idx_flow_versions_flow_id ON flow_versions(flow_id);
 CREATE INDEX IF NOT EXISTS idx_executions_flow_id ON executions(flow_id);
 CREATE INDEX IF NOT EXISTS idx_execution_logs_execution_id ON execution_logs(execution_id);
 CREATE INDEX IF NOT EXISTS idx_credentials_workspace_id ON credentials(workspace_id);
+CREATE INDEX IF NOT EXISTS idx_business_profiles_workspace_id ON business_profiles(workspace_id);
+CREATE INDEX IF NOT EXISTS idx_secretary_agents_workspace_id ON secretary_agents(workspace_id);
+CREATE INDEX IF NOT EXISTS idx_secretary_agents_business_profile_id ON secretary_agents(business_profile_id);
