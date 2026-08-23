@@ -29,7 +29,7 @@
       "@/engine/*": ["src/engine/*"]
     }
   },
-  "include": ["src"],
-  "exclude": ["api"],
+  "include": ["src", "server/src"],
+  "exclude": ["api", "dist"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
