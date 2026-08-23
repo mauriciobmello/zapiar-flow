@@ -1,11 +1,10 @@
 import app from '../server/src/app.js'
 
-export default function handler(req, res) {
-  const url = req.url || '/'
+app.use((err: any, req: any, res: any, next: any) => {
+  console.error('Unhandled error:', err)
+  res.status(err.status || 500).json({
+    error: process.env.NODE_ENV === 'production' ? 'Internal server error' : err.message,
+  })
+})
 
-  if (process.env.VERCEL && url !== '/health') {
-    req.url = `/api${url}`
-  }
-
-  return app(req, res)
-}
+export default app
