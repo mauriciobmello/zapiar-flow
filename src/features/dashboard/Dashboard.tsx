@@ -123,11 +123,11 @@ export default function Dashboard() {
     flowId: '${selectedFlow.id}',
     container: document.body,
     theme: {
-      primaryColor: '#2563eb',
+      primaryColor: '#059669',
       backgroundColor: '#ffffff',
       textColor: '#111827',
       borderRadius: '12px',
-      fontFamily: 'system-ui, sans-serif'
+      fontFamily: 'Inter, system-ui, sans-serif'
     }
   })
 <\/script>`
@@ -166,8 +166,8 @@ export default function Dashboard() {
       <header className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Zapiar Flow</h1>
-            <p className="text-gray-600 text-sm">Bem-vindo, {user?.name}</p>
+            <h1 className="text-2xl font-bold text-primary-600">Zapiar Flow</h1>
+            <p className="text-gray-600 text-sm mt-1">Bem-vindo, {user?.name}</p>
           </div>
           <button
             onClick={handleSignOut}
@@ -190,7 +190,7 @@ export default function Dashboard() {
                   const workspace = workspaces.find((w) => w.id === e.target.value)
                   if (workspace) setCurrentWorkspace(workspace)
                 }}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
               >
                 {workspaces.map((workspace) => (
                   <option key={workspace.id} value={workspace.id}>
@@ -201,7 +201,7 @@ export default function Dashboard() {
             </div>
             <button
               onClick={() => setShowNewWorkspaceModal(true)}
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition"
+              className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition"
             >
               + Novo Workspace
             </button>
@@ -215,13 +215,13 @@ export default function Dashboard() {
             <div className="flex gap-2">
               <button
                 onClick={() => navigate('/secretary/new')}
-                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition"
+                className="px-4 py-2 bg-accent-600 hover:bg-accent-700 text-white rounded-lg transition"
               >
                 Secretaria IA
               </button>
               <button
                 onClick={handleCreateFlow}
-                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition"
+                className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition"
               >
                 + Novo Fluxo
               </button>
@@ -233,12 +233,12 @@ export default function Dashboard() {
           ) : flows.length === 0 ? (
             <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
               <p className="text-gray-600 mb-4">Nenhum fluxo criado ainda</p>
-              <button
-                onClick={handleCreateFlow}
-                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition"
-              >
-                Criar Primeiro Fluxo
-              </button>
+                  <button
+                    onClick={handleCreateFlow}
+                    className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition"
+                  >
+                    Criar Primeiro Fluxo
+                  </button>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -310,7 +310,7 @@ export default function Dashboard() {
                 value={workspaceName}
                 onChange={(e) => setWorkspaceName(e.target.value)}
                 placeholder="Nome do workspace"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none mb-4"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none mb-4"
                 autoFocus
               />
               <div className="flex gap-2 justify-end">
@@ -323,7 +323,7 @@ export default function Dashboard() {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition"
+                  className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition"
                 >
                   Criar
                 </button>
@@ -357,11 +357,11 @@ export default function Dashboard() {
     flowId: '${selectedFlow.id}',
     container: document.body,
     theme: {
-      primaryColor: '#2563eb',
+      primaryColor: '#059669',
       backgroundColor: '#ffffff',
       textColor: '#111827',
       borderRadius: '12px',
-      fontFamily: 'system-ui, sans-serif'
+      fontFamily: 'Inter, system-ui, sans-serif'
     }
   })
 <\/script>`}
@@ -369,7 +369,7 @@ export default function Dashboard() {
             <div className="flex justify-end mt-4">
               <button
                 onClick={handleCopyWidgetCode}
-                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition"
+                className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition"
               >
                 {copied ? 'Copiado!' : 'Copiar código'}
               </button>

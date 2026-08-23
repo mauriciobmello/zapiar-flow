@@ -32,7 +32,7 @@ export default function ChatWindow({
   const scrollRef = useRef<HTMLDivElement>(null)
   const bottomRef = useRef<HTMLDivElement>(null)
 
-  const primary = theme?.primaryColor || '#2563eb'
+  const primary = theme?.primaryColor || '#059669'
   const bg = theme?.backgroundColor || '#ffffff'
   const text = theme?.textColor || '#111827'
   const radius = theme?.borderRadius || '12px'

@@ -7,7 +7,7 @@ interface ChatBubbleProps {
 }
 
 export default function ChatBubble({ open, theme, onClick }: ChatBubbleProps) {
-  const primary = theme?.primaryColor || '#2563eb'
+  const primary = theme?.primaryColor || '#059669'
   const radius = theme?.borderRadius || '50%'
 
   return (

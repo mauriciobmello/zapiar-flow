@@ -97,8 +97,8 @@ export default function ComponentLibrary({ onNodeDragStart }: ComponentLibraryPr
         ))}
       </div>
 
-      <div className="mt-6 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-        <p className="text-xs text-blue-700">
+      <div className="mt-6 p-3 bg-primary-50 border border-primary-200 rounded-lg">
+        <p className="text-xs text-primary-700">
           💡 <strong>Dica:</strong> Arraste um componente para o canvas para adicioná-lo
         </p>
       </div>

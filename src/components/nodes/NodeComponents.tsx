@@ -10,11 +10,11 @@ interface BaseNodeProps {
 }
 
 const nodeColors: Record<string, string> = {
-  start: 'bg-green-100 border-green-400',
+  start: 'bg-primary-100 border-primary-400',
   end: 'bg-red-100 border-red-400',
-  text: 'bg-blue-100 border-blue-400',
-  question: 'bg-yellow-100 border-yellow-400',
-  button: 'bg-purple-100 border-purple-400',
+  text: 'bg-sky-100 border-sky-400',
+  question: 'bg-amber-100 border-amber-400',
+  button: 'bg-violet-100 border-violet-400',
   condition: 'bg-orange-100 border-orange-400',
   variable: 'bg-indigo-100 border-indigo-400',
   delay: 'bg-pink-100 border-pink-400',
@@ -33,7 +33,7 @@ function BaseNode({ data, isSelected, type, children }: NodeComponentProps) {
   return (
     <div
       className={`px-4 py-2 rounded-lg border-2 shadow-sm ${colorClass} ${
-        isSelected ? 'ring-2 ring-blue-500' : ''
+        isSelected ? 'ring-2 ring-primary-500' : ''
       } bg-white`}
     >
       <div className="font-medium text-sm text-gray-900">{data.label}</div>

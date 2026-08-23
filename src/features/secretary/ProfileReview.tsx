@@ -114,7 +114,7 @@ export default function ProfileReview({ profile }: ProfileReviewProps) {
                 type="text"
                 value={form.businessName}
                 onChange={handleChange('businessName')}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
               />
             </div>
             <div>
@@ -123,7 +123,7 @@ export default function ProfileReview({ profile }: ProfileReviewProps) {
                 type="text"
                 value={form.segment}
                 onChange={handleChange('segment')}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
               />
             </div>
             <div>
@@ -132,7 +132,7 @@ export default function ProfileReview({ profile }: ProfileReviewProps) {
                 type="text"
                 value={form.subsegment}
                 onChange={handleChange('subsegment')}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
               />
             </div>
             <div>
@@ -141,7 +141,7 @@ export default function ProfileReview({ profile }: ProfileReviewProps) {
                 type="text"
                 value={form.businessModel}
                 onChange={handleChange('businessModel')}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
               />
             </div>
           </div>
@@ -152,7 +152,7 @@ export default function ProfileReview({ profile }: ProfileReviewProps) {
               type="text"
               value={form.customers}
               onChange={handleChange('customers')}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
             />
           </div>
 
@@ -162,7 +162,7 @@ export default function ProfileReview({ profile }: ProfileReviewProps) {
               type="text"
               value={form.products}
               onChange={handleChange('products')}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
             />
           </div>
 
@@ -172,7 +172,7 @@ export default function ProfileReview({ profile }: ProfileReviewProps) {
               type="text"
               value={form.services}
               onChange={handleChange('services')}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
             />
           </div>
 
@@ -182,7 +182,7 @@ export default function ProfileReview({ profile }: ProfileReviewProps) {
               type="text"
               value={form.channels}
               onChange={handleChange('channels')}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
             />
           </div>
 
@@ -192,7 +192,7 @@ export default function ProfileReview({ profile }: ProfileReviewProps) {
               type="text"
               value={form.departments}
               onChange={handleChange('departments')}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
             />
           </div>
 
@@ -202,7 +202,7 @@ export default function ProfileReview({ profile }: ProfileReviewProps) {
               type="text"
               value={form.communicationStyle}
               onChange={handleChange('communicationStyle')}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
             />
           </div>
         </section>
@@ -217,7 +217,7 @@ export default function ProfileReview({ profile }: ProfileReviewProps) {
             onChange={(e) => setRequest(e.target.value)}
             placeholder="Ex: Quero um fluxo de boas-vindas para novos clientes no WhatsApp, apresentando a empresa e perguntando como podem ser atendidos."
             rows={4}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none resize-none"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none resize-none"
           />
         </section>
 
@@ -231,7 +231,7 @@ export default function ProfileReview({ profile }: ProfileReviewProps) {
           <button
             onClick={handleGenerate}
             disabled={loading}
-            className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-300 text-white font-medium rounded-lg transition"
+              className="px-6 py-3 bg-primary-600 hover:bg-primary-700 disabled:bg-gray-300 text-white font-medium rounded-lg transition"
           >
             {loading ? 'Gerando...' : 'Gerar Fluxo'}
           </button>

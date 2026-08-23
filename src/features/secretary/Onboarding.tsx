@@ -96,7 +96,7 @@ export default function Onboarding() {
               <div
                 className={`max-w-[80%] rounded-lg px-4 py-2 ${
                   msg.role === 'user'
-                    ? 'bg-blue-600 text-white'
+                    ? 'bg-primary-600 text-white'
                     : 'bg-white border border-gray-200 text-gray-900'
                 }`}
               >
@@ -122,13 +122,13 @@ export default function Onboarding() {
               onKeyDown={handleKeyDown}
               placeholder="Digite sua resposta..."
               rows={2}
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none resize-none"
+               className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none resize-none"
               disabled={loading}
             />
             <button
               onClick={handleSend}
               disabled={loading || !input.trim()}
-              className="px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white rounded-lg transition"
+              className="px-6 py-2 bg-primary-600 hover:bg-primary-700 disabled:bg-gray-300 text-white rounded-lg transition"
             >
               Enviar
             </button>

@@ -262,7 +262,7 @@ export default function FlowEditor() {
     return (
       <div className="flex items-center justify-center h-screen bg-gray-50">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
           <p className="text-gray-600">Carregando editor...</p>
         </div>
       </div>
@@ -312,7 +312,7 @@ export default function FlowEditor() {
                     }}
                     autoFocus
                     disabled={renaming}
-                    className="text-xl font-bold text-gray-900 border border-blue-400 rounded px-1 -mx-1 outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                     className="text-xl font-bold text-gray-900 border border-primary-400 rounded px-1 -mx-1 outline-none focus:ring-2 focus:ring-primary-500 disabled:opacity-50"
                   />
                 ) : (
                   <h1
@@ -329,7 +329,7 @@ export default function FlowEditor() {
                   </span>
                 )}
                 {saving && (
-                  <span className="text-xs font-medium text-blue-600 px-2 py-1 bg-blue-50 rounded">
+                  <span className="text-xs font-medium text-primary-600 px-2 py-1 bg-primary-50 rounded">
                     Salvando...
                   </span>
                 )}
@@ -397,7 +397,7 @@ export default function FlowEditor() {
             <button
               onClick={handlePublish}
               disabled={publishLoading || validationErrors.length > 0}
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+               className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed font-medium"
             >
               {publishLoading ? '...' : '🚀 Publicar'}
             </button>

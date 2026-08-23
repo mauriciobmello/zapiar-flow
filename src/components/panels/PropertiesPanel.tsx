@@ -91,7 +91,7 @@ export default function PropertiesPanel({ node, onUpdate }: PropertiesPanelProps
                 },
               })
             }
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-sm"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none text-sm"
           />
         </div>
 
@@ -103,7 +103,7 @@ export default function PropertiesPanel({ node, onUpdate }: PropertiesPanelProps
               value={(config.message as string) || ''}
               onChange={(e) => handleConfigChange('message', e.target.value)}
               placeholder="Olá, {{nome}}!"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-sm"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none text-sm"
               rows={3}
             />
             <p className="text-xs text-gray-500 mt-1">Use {'{{'} variável {'}}'} para inserir variáveis</p>
@@ -119,7 +119,7 @@ export default function PropertiesPanel({ node, onUpdate }: PropertiesPanelProps
                 value={(config.question as string) || ''}
                 onChange={(e) => handleConfigChange('question', e.target.value)}
                 placeholder="Qual é o seu nome?"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-sm"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none text-sm"
               />
             </div>
             <div>
@@ -131,7 +131,7 @@ export default function PropertiesPanel({ node, onUpdate }: PropertiesPanelProps
                 value={(config.variable as string) || ''}
                 onChange={(e) => handleConfigChange('variable', e.target.value)}
                 placeholder="nome"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-sm"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none text-sm"
               />
             </div>
           </>
@@ -148,7 +148,7 @@ export default function PropertiesPanel({ node, onUpdate }: PropertiesPanelProps
                 value={(config.variable as string) || ''}
                 onChange={(e) => handleConfigChange('variable', e.target.value)}
                 placeholder="escolha"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-sm"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none text-sm"
               />
             </div>
             <div>
@@ -165,7 +165,7 @@ export default function PropertiesPanel({ node, onUpdate }: PropertiesPanelProps
                           handleConfigChange('buttons', updated)
                         }}
                         placeholder={`Opção ${idx + 1}`}
-                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-sm"
+                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none text-sm"
                       />
                       <button
                         type="button"
@@ -185,7 +185,7 @@ export default function PropertiesPanel({ node, onUpdate }: PropertiesPanelProps
                   const current = Array.isArray(config.buttons) ? (config.buttons as { label: string }[]) : []
                   handleConfigChange('buttons', [...current, { label: `Opção ${current.length + 1}` }])
                 }}
-                className="mt-2 w-full px-3 py-2 text-sm text-blue-600 border border-dashed border-blue-300 rounded-lg hover:bg-blue-50 transition"
+                className="mt-2 w-full px-3 py-2 text-sm text-primary-600 border border-dashed border-primary-300 rounded-lg hover:bg-primary-50 transition"
               >
                 + Adicionar opção
               </button>
@@ -202,7 +202,7 @@ export default function PropertiesPanel({ node, onUpdate }: PropertiesPanelProps
                 value={(config.name as string) || ''}
                 onChange={(e) => handleConfigChange('name', e.target.value)}
                 placeholder="idade"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-sm"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none text-sm"
               />
             </div>
             <div>
@@ -212,7 +212,7 @@ export default function PropertiesPanel({ node, onUpdate }: PropertiesPanelProps
                 value={String(config.value ?? '')}
                 onChange={(e) => handleConfigChange('value', e.target.value)}
                 placeholder="18"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-sm"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none text-sm"
               />
             </div>
           </>
@@ -226,7 +226,7 @@ export default function PropertiesPanel({ node, onUpdate }: PropertiesPanelProps
               value={(config.rule as string) || ''}
               onChange={(e) => handleConfigChange('rule', e.target.value)}
               placeholder="{{variável}} == valor"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-sm"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none text-sm"
             />
             <p className="text-xs text-gray-500 mt-1">
               Operadores aceitos: ==, !=, &gt;, &lt;, &gt;=, &lt;=. O nó tem duas saídas — verde para
@@ -243,7 +243,7 @@ export default function PropertiesPanel({ node, onUpdate }: PropertiesPanelProps
                 type="number"
                 value={(config.duration as number) || 0}
                 onChange={(e) => handleConfigChange('duration', parseInt(e.target.value))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-sm"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none text-sm"
                 min={0}
               />
             </div>
@@ -252,7 +252,7 @@ export default function PropertiesPanel({ node, onUpdate }: PropertiesPanelProps
               <select
                 value={(config.unit as string) || 'segundos'}
                 onChange={(e) => handleConfigChange('unit', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-sm"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none text-sm"
               >
                 <option value="milissegundos">Milissegundos</option>
                 <option value="segundos">Segundos</option>
@@ -276,13 +276,13 @@ export default function PropertiesPanel({ node, onUpdate }: PropertiesPanelProps
                 placeholder={'curl -X POST https://api.exemplo.com/pedidos \\\n  -H "Authorization: Bearer {{token}}" \\\n  -d \'{"cliente": "{{nome}}"}\''}
                 rows={3}
                 spellCheck={false}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-sm font-mono"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none text-sm font-mono"
               />
               <button
                 type="button"
                 onClick={handleImportCurl}
                 disabled={!curlInput.trim()}
-                className="mt-2 w-full px-3 py-2 text-sm text-blue-600 border border-dashed border-blue-300 rounded-lg hover:bg-blue-50 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="mt-2 w-full px-3 py-2 text-sm text-primary-600 border border-dashed border-primary-300 rounded-lg hover:bg-primary-50 transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Preencher método, URL, headers e corpo
               </button>
@@ -296,7 +296,7 @@ export default function PropertiesPanel({ node, onUpdate }: PropertiesPanelProps
               <select
                 value={(config.method as string) || 'GET'}
                 onChange={(e) => handleConfigChange('method', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-sm"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none text-sm"
               >
                 <option value="GET">GET</option>
                 <option value="POST">POST</option>
@@ -312,7 +312,7 @@ export default function PropertiesPanel({ node, onUpdate }: PropertiesPanelProps
                 value={(config.url as string) || ''}
                 onChange={(e) => handleConfigChange('url', e.target.value)}
                 placeholder="https://api.exemplo.com/endpoint"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-sm"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none text-sm"
               />
               <p className="text-xs text-gray-500 mt-1">
                 Só URLs públicas (http/https) são permitidas — endereços internos/privados são bloqueados.
@@ -326,7 +326,7 @@ export default function PropertiesPanel({ node, onUpdate }: PropertiesPanelProps
                 placeholder={'{\n  "page": "1",\n  "user": "{{nome}}"\n}'}
                 rows={3}
                 spellCheck={false}
-                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-sm font-mono ${
+                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none text-sm font-mono ${
                   isValidJsonOrEmpty(config.queryParams) ? 'border-gray-300' : 'border-red-400'
                 }`}
               />
@@ -342,7 +342,7 @@ export default function PropertiesPanel({ node, onUpdate }: PropertiesPanelProps
                 placeholder={'{\n  "Authorization": "Bearer {{token}}"\n}'}
                 rows={3}
                 spellCheck={false}
-                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-sm font-mono ${
+                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none text-sm font-mono ${
                   isValidJsonOrEmpty(config.headers) ? 'border-gray-300' : 'border-red-400'
                 }`}
               />
@@ -359,7 +359,7 @@ export default function PropertiesPanel({ node, onUpdate }: PropertiesPanelProps
                 placeholder={'{\n  "cliente": "{{nome}}"\n}'}
                 rows={3}
                 spellCheck={false}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-sm font-mono"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none text-sm font-mono"
               />
               <p className="text-xs text-gray-500 mt-1">
                 Enviado como está (sem escape automático) — se for JSON, lembre de definir o header
@@ -375,7 +375,7 @@ export default function PropertiesPanel({ node, onUpdate }: PropertiesPanelProps
                 value={(config.variable as string) || ''}
                 onChange={(e) => handleConfigChange('variable', e.target.value)}
                 placeholder="resposta"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-sm"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none text-sm"
               />
             </div>
           </>
@@ -391,7 +391,7 @@ export default function PropertiesPanel({ node, onUpdate }: PropertiesPanelProps
               value={(config.variable as string) || ''}
               onChange={(e) => handleConfigChange('variable', e.target.value)}
               placeholder="payload"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-sm"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none text-sm"
             />
             <p className="text-xs text-gray-500 mt-1">
               Ao chegar neste nó, o fluxo pausa até um sistema externo fazer POST na URL do

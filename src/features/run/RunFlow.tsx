@@ -46,7 +46,7 @@ export default function RunFlow() {
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4 py-8">
       <div className="w-full max-w-lg bg-white rounded-lg shadow-lg flex flex-col h-[80vh]">
         <header className="px-4 py-3 border-b border-gray-200">
-          <h1 className="font-bold text-gray-900">Zapiar Flow</h1>
+          <h1 className="font-bold text-primary-600">Zapiar Flow</h1>
         </header>
 
         <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
@@ -61,7 +61,7 @@ export default function RunFlow() {
               <div
                 className={`max-w-[80%] px-3 py-2 rounded-lg text-sm ${
                   entry.from === 'user'
-                    ? 'bg-blue-600 text-white'
+                    ? 'bg-primary-600 text-white'
                     : entry.system
                       ? 'bg-yellow-50 text-yellow-800 border border-yellow-200'
                       : 'bg-gray-100 text-gray-900'
@@ -79,7 +79,7 @@ export default function RunFlow() {
                   key={opt.value}
                   onClick={() => handleSend(opt.value)}
                   disabled={sending}
-                  className="px-3 py-1.5 text-sm bg-white border border-blue-600 text-blue-600 rounded-full hover:bg-blue-50 transition disabled:opacity-50"
+                  className="px-3 py-1.5 text-sm bg-white border border-primary-600 text-primary-600 rounded-full hover:bg-primary-50 transition disabled:opacity-50"
                 >
                   {opt.label}
                 </button>
@@ -130,12 +130,12 @@ export default function RunFlow() {
               placeholder="Digite sua resposta..."
               autoFocus
               disabled={sending}
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-sm"
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none text-sm"
             />
             <button
               type="submit"
               disabled={sending || !input.trim()}
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition disabled:opacity-50 text-sm font-medium"
+              className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition disabled:opacity-50 text-sm font-medium"
             >
               Enviar
             </button>
